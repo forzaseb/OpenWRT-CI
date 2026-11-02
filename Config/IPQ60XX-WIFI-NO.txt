@@ -33,6 +33,3 @@ CONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_redmi_ax5-jdcloud=y
 # CONFIG_PACKAGE_ipq-wifi-redmi_ax5-jdcloud is not set
 # CONFIG_PACKAGE_ipq-wifi-xiaomi_ax1800 is not set
 # CONFIG_PACKAGE_ipq-wifi-zn_m2 is not set
-# eMMC 机器 rootfs 给大一点, daed 单体 ~22MB, 默认 17MB 固件塞不下
-CONFIG_TARGET_ROOTFS_PARTSIZE=300
-CONFIG_TARGET_KERNEL_PARTSIZE=64
