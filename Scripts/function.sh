@@ -58,50 +58,6 @@ CONFIG_KERNEL_TRANSPARENT_HUGEPAGE_MADVISE=y
 EOF
 }
 
-function cat_usb_net() {
-  cat >> $1 <<EOF
-#USB CPE Driver
-CONFIG_PACKAGE_kmod-usb-net=y
-CONFIG_PACKAGE_kmod-usb-net-cdc-eem=y
-CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
-CONFIG_PACKAGE_kmod-usb-net-cdc-mbim=y
-CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=y
-CONFIG_PACKAGE_kmod-usb-net-cdc-subset=y
-CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=y
-CONFIG_PACKAGE_kmod-usb-net-ipheth=y
-CONFIG_PACKAGE_kmod-usb-net-rndis=y
-CONFIG_PACKAGE_kmod-usb-net-rtl8150=y
-CONFIG_PACKAGE_kmod-usb-net-rtl8152=y
-EOF
-#6.12内核不包含以下驱动
-if echo "$CI_NAME" | grep -v "6.12" > /dev/null; then
-  cat >> $1 <<EOF
-CONFIG_PACKAGE_kmod-usb-net-qmi-wwan=y
-CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-fibocom=y
-CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-quectel=y
-EOF
-fi
-
-}
-
-function set_nss_driver() {
-  cat >> $1 <<EOF
-#NSS驱动相关
-CONFIG_PACKAGE_kmod-qca-nss-dp=y
-CONFIG_PACKAGE_kmod-qca-nss-drv=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-bridge-mgr=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-vlan=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-igs=y
-#CONFIG_PACKAGE_kmod-qca-nss-drv-map-t=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-pptp=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-qdisc=y
-CONFIG_PACKAGE_kmod-qca-nss-ecm=y
-CONFIG_PACKAGE_kmod-qca-nss-macsec=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-l2tpv2=y
-CONFIG_PACKAGE_kmod-qca-nss-drv-lag-mgr=y
-EOF
-}
 function kernel_version() {
   echo $(sed -n 's/^KERNEL_PATCHVER:=\(.*\)/\1/p' target/linux/qualcommax/Makefile)
 }
