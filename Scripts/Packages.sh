@@ -61,7 +61,6 @@ UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
 #UPDATE_PACKAGE "passwall" "Openwrt-Passwall/openwrt-passwall" "main" "pkg"
 UPDATE_PACKAGE "passwall2" "Openwrt-Passwall/openwrt-passwall2" "main" "pkg"
-UPDATE_PACKAGE "honk" "QiuSimons/luci-app-honk" "master" "" "luci-app-honk honk"
 
 UPDATE_PACKAGE "diskmanager" "4IceG/luci-app-mini-diskmanager" "main"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
@@ -140,6 +139,7 @@ rm -rf ./feeds/packages/net/mwan3/
 git clone https://github.com/dl12345/luci-app-mwan3.git ./feeds/luci/applications/luci-app-mwan3
 git clone https://github.com/dl12345/mwan3.git ./feeds/packages/net/mwan3/
 
+git clone https://github.com/QiuSimons/luci-app-honk ./package/honk
 git clone https://github.com/QiuSimons/vmlinux-btf.git ./package/vmlinux-btf
 
 #UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
