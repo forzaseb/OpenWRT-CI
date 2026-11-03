@@ -179,10 +179,10 @@ jobs:
         run: |
           cd ./wrt/
 
+          $GITHUB_WORKSPACE/Scripts/build_honk_core.sh aarch64_generic
           $GITHUB_WORKSPACE/Scripts/Packages.sh
           $GITHUB_WORKSPACE/Scripts/Handles.sh
           $GITHUB_WORKSPACE/.github/scripts/prepare-i2c-tools.sh
-          $GITHUB_WORKSPACE/Scripts/build_honk_core.sh aarch64_generic
 
       - name: Custom Settings
         run: |
