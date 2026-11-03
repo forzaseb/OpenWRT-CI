@@ -52,8 +52,14 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	fi
 fi
 
-#修改jdc ax1800 pro 的内核大小为12M
-image_file='./target/linux/qualcommax/image/ipq60xx.mk'
-sed -i "/^define Device\/emmc-common/,/^endef/ s/KERNEL_SIZE := 6144k/KERNEL_SIZE := 12288k/" $image_file
-sed -i "/^define Device\/jdcloud_re-ss-01/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
-cat $image_file
+#修改jdc ax1800 pro 的内核大小为12M（仅 IPQ60XX）
+if [[ "${WRT_TARGET,,}" == "qualcommax" && "${WRT_SUBTARGET,,}" == "ipq60xx" ]]; then
+	image_file='./target/linux/qualcommax/image/ipq60xx.mk'
+	if [ -f "$image_file" ]; then
+		sed -i "/^define Device\/emmc-common/,/^endef/ s/KERNEL_SIZE := 6144k/KERNEL_SIZE := 12288k/" "$image_file"
+		sed -i "/^define Device\/jdcloud_re-ss-01/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" "$image_file"
+		cat "$image_file"
+	else
+		echo "WARNING: $image_file not found, skip JDC kernel size tweak"
+	fi
+fi
