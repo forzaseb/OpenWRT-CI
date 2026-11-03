@@ -179,8 +179,23 @@ jobs:
         run: |
           cd ./wrt/
 
-          $GITHUB_WORKSPACE/Scripts/build_honk_core.sh aarch64_generic
           $GITHUB_WORKSPACE/Scripts/Packages.sh
+
+          # 从 honk 官方 Release 取预编译的 honk-core
+          case "$WRT_TARGET" in
+            x86*) HONK_ARCH=x86_64 ;;
+            *)    HONK_ARCH=aarch64_generic ;;
+          esac
+          HONK_IPK=$(curl -fsSL -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/QiuSimons/luci-app-honk/releases/latest" \
+            | jq -r --arg arch "$HONK_ARCH" '.assets[] | select(.name | endswith(".ipk")) | select(.name | contains($arch)) | .browser_download_url' \
+            | head -n 1)
+          [ -n "$HONK_IPK" ] || { echo "ERROR: honk-core ipk not found for $HONK_ARCH"; exit 1; }
+          curl -fsSL -o /tmp/honk.ipk "$HONK_IPK"
+          rm -rf /tmp/honk-pkg && mkdir -p /tmp/honk-pkg
+          ( cd /tmp/honk-pkg && ar x /tmp/honk.ipk && tar -xzf data.tar.gz )
+          install -D -m 0755 /tmp/honk-pkg/usr/bin/honk-core ./package/luci-app-honk/honk/files/honk-core.bin
+
           $GITHUB_WORKSPACE/Scripts/Handles.sh
           $GITHUB_WORKSPACE/.github/scripts/prepare-i2c-tools.sh
 
