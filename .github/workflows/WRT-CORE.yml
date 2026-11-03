@@ -182,7 +182,6 @@ jobs:
 
       - name: Custom Settings
         run: |
-          . $GITHUB_WORKSPACE/Scripts/function.sh
           cd ./wrt/
 
           if [[ "${WRT_CONFIG,,}" == *"test"* ]]; then
