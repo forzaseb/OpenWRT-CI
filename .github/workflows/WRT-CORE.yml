@@ -209,11 +209,27 @@ jobs:
           curl -fL --retry 3 --retry-delay 2 -o /tmp/honk.ipk "$HONK_IPK"
           ls -l /tmp/honk.ipk
           file /tmp/honk.ipk
-          ar t /tmp/honk.ipk
 
           rm -rf /tmp/honk-pkg && mkdir -p /tmp/honk-pkg
-          ( cd /tmp/honk-pkg && ar x /tmp/honk.ipk && tar -xzf data.tar.gz )
-          install -D -m 0755 /tmp/honk-pkg/usr/bin/honk-core ./package/luci-app-honk/honk/files/honk-core.bin
+
+          if head -c 8 /tmp/honk.ipk | grep -q '!<arch>'; then
+            # 标准 opkg ipk（ar 包）
+            ( cd /tmp/honk-pkg && ar x /tmp/honk.ipk && tar -xzf data.tar.gz )
+          else
+            # 这个 release 的 24.10.8 .ipk 实际是 gzip tar（apk 风格）
+            tar -xzf /tmp/honk.ipk -C /tmp/honk-pkg
+            if [ -f /tmp/honk-pkg/data.tar.gz ]; then
+              tar -xzf /tmp/honk-pkg/data.tar.gz -C /tmp/honk-pkg
+            fi
+          fi
+
+          HONK_CORE=$(find /tmp/honk-pkg -type f -name honk-core -print -quit)
+          if [ -z "$HONK_CORE" ]; then
+            echo "ERROR: honk-core not found; package contents:"
+            find /tmp/honk-pkg -maxdepth 3 -type f
+            exit 1
+          fi
+          install -D -m 0755 "$HONK_CORE" ./package/luci-app-honk/honk/files/honk-core.bin
 
           $GITHUB_WORKSPACE/Scripts/Handles.sh
           $GITHUB_WORKSPACE/.github/scripts/prepare-i2c-tools.sh
