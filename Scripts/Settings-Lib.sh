@@ -55,7 +55,7 @@ fi
 if [[ "${WRT_TARGET,,}" == "qualcommax" && "${WRT_SUBTARGET,,}" == "ipq60xx" ]]; then
 	image_file='./target/linux/qualcommax/image/ipq60xx.mk'
 	if [ -f "$image_file" ]; then
-		sed -i "/^define Device\/emmc-common/,/^endef/ s/KERNEL_SIZE := 6144k/KERNEL_SIZE := 12288k/" "$image_file"
+		sed -i "/^define Device\/redmi_ax5-jdcloud/,/^endef/ s/KERNEL_SIZE := 6144k/KERNEL_SIZE := 12288k/" "$image_file"
 		sed -i "/^define Device\/jdcloud_re-ss-01/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" "$image_file"
 		cat "$image_file"
 	else
